@@ -1,3 +1,12 @@
+'''
+    Title      : Colour detection in Images/Video
+    Creator    : GANDLA SRIMAN CHAKRI
+    College    : NIT Durgapur
+    Department : Electronics and Communication Engineering
+    Task number: 2
+
+'''
+
 import cv2
 import pandas as pd
 
@@ -7,7 +16,9 @@ clicked = False
 r = g = b = x_pos = y_pos = 0
 
 #declaring the mode of operation
-mode='image'
+#to detect the colour in the real time video change the mode in to 'video'
+
+mode='video'
 
 # Reading csv file with pandas and giving names to each column
 index = ["color", "color_name", "hex", "R", "G", "B"]
@@ -38,13 +49,11 @@ def draw_function(event, x, y, flags, param):
 
 if mode=='video':
     cap=cv2.VideoCapture(0)
-
-#image is to be stored in the same directory 
 elif mode=='image':
-    img=cv2.imread('colour_image.jpg')  
+    img=cv2.imread('colour_image.jpg')
 
 while True:
-    
+
     if mode=='video':
 
         ret, img = cap.read()
@@ -53,20 +62,19 @@ while True:
     cv2.namedWindow('image')
     cv2.setMouseCallback('image', draw_function)
 
-    cv2.imshow("image", img)
 
     cv2.rectangle(img, (20, 20), (750, 60), (b, g, r), -1)
 
     # Creating text string to display( Color name and RGB values )
     text = get_color_name(r, g, b) + ' R=' + str(r) + ' G=' + str(g) + ' B=' + str(b)
 
-    # cv2.putText(img,text,start,font(0-7),fontScale,color,thickness,lineType )
+    #displaying the text on the image
     cv2.putText(img, text, (50, 50), 2, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
 
     # For very light colours we will display text in black colour
     if r + g + b >= 600:
         cv2.putText(img, text, (50, 50), 2, 0.8, (0, 0, 0), 2, cv2.LINE_AA)
-    #cv2.imshow("image", img)
+
 
     clicked = False
 
@@ -76,3 +84,4 @@ while True:
         break
 
 cv2.destroyAllWindows()
+
